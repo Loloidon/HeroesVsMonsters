@@ -9,42 +9,44 @@ namespace HeroesVsMonsters.Models
 {
     public class Human : Hero
     {
-        public override int SetHp()
-        {
-            int endurance = SetStrenght(Dice6());
-            int hp= 0;
-            int modifier = Modifier();
-            return endurance += modifier;
-        }
-        public override int SetStrenght(List<int>big)
+        public override void SetStrenght(List<int> big6)
         {
             int strenght = 0;
-            foreach (int i in big)
+            foreach (int i in big6)
             {
-                strenght += big[i];
+                strenght += i;
             }
-            return strenght;
+            Strenght = strenght;
         }
-        public override int SetEndurance(List<int>big)
+        public override void SetEndurance(List<int> big6)
         {
             int endurance = 0;
-            foreach (int i in big)
+            foreach (int i in big6)
             {
-                endurance += big[i];
+                endurance += i;
             }
-            return  endurance;
+            endurance += 1;
+            Endurance = endurance;
+        }
+        public override void SetHp()
+        {
+            int hp = 0;
+            int modifier = Modifier();
+            hp = Endurance + modifier;
+
+            Hp = hp;
         }
         public static List<int> Dice4()
         {
-            
+
             Random r = new Random();
-            List<int> big4 = new ();
-            for(int i=0;i<3;i++)
+            List<int> big4 = new();
+            for (int i = 0; i < 3; i++)
             {
-                
-                
-                big4.Add(r.Next(1, 4));
-                
+
+
+                big4.Add(r.Next(1, 5));
+
             }
             big4.Sort();
             big4.Remove(0);
@@ -60,7 +62,7 @@ namespace HeroesVsMonsters.Models
             {
 
 
-                big6.Add(r.Next(1, 6));
+                big6.Add(r.Next(1, 7));
 
             }
             big6.Sort();
@@ -71,15 +73,15 @@ namespace HeroesVsMonsters.Models
         public int Modifier()
         {
             int modifier = 0;
-            int endurance = SetEndurance(Dice6());
-            int strenght = SetStrenght(Dice6());
+            int endurance = Endurance;
+            int strenght = Strenght;
             if (endurance < 5)
                 modifier = -1;
-            
-            else if(endurance<10)
+
+            else if (endurance < 10)
                 modifier = 0;
 
-            else if (endurance<15)
+            else if (endurance < 15)
                 modifier = 1;
             else
             {
@@ -90,7 +92,7 @@ namespace HeroesVsMonsters.Models
         public int ModifierStrenght()
         {
             int modifier = 0;
-            int strenght = SetStrenght(Dice6());
+            int strenght = Strenght;
             if (strenght < 5)
                 modifier = -1;
 
@@ -105,18 +107,20 @@ namespace HeroesVsMonsters.Models
             }
             return modifier;
         }
-        
-        public override int Attack()
+
+        public override void Attack()
         {
             int Dice = 0;
-            foreach(int i in Dice4())
+            foreach (int i in Dice4())
             {
                 Dice += i;
             }
             int modifier = ModifierStrenght();
-            return Dice + modifier;
+            ATK = Dice + modifier;
 
         }
-    }   
+
+
+    }
 
 }
